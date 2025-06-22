@@ -19,6 +19,7 @@ const User = require("./models/user.js");
 const listingRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/reviews.js");
 const userRouter = require("./routes/user.js");
+const searchRouter = require("./routes/search.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 
@@ -32,12 +33,13 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
-app.set("views engine", "ejs");
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+app.use("/search", searchRouter);
 
 const store = MongoStore.create({
   mongoUrl: dbUrl,

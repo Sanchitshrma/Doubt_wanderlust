@@ -8,6 +8,10 @@ const multer = require("multer");
 const { storage } = require("../Cloudconfig.js");
 const upload = multer({ storage });
 
+//Itinerary
+router.get("/itinerary", listingController.renderItineraryForm);
+router.post("/itinerary", listingController.generateItinerary);
+
 router
   .route("/")
   //index route
@@ -45,4 +49,5 @@ router.get(
   isOwner,
   wrapAsync(listingController.renderEditForm)
 );
+
 module.exports = router;

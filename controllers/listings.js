@@ -85,3 +85,35 @@ module.exports.destroyListing = async (req, res) => {
   req.flash("success", " Listing is deleted !");
   res.redirect("/listings");
 };
+
+module.exports.renderItineraryForm = (req, res) => {
+  res.render("listings/itinerary", { itinerary: null });
+};
+
+module.exports.generateItinerary = async (req, res) => {
+  const { place, days } = req.body;
+
+  try {
+    const { GoogleGenAI } = await import("@google/genai");
+    const { marked } = await import("marked");
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+    });
+
+    const prompt = `Create a detailed ${days}-day travel itinerary for ${place}, including sightseeing, food recommendations, local tips, and cultural experiences.`;
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+    const markdownText = response.text;
+    const htmlContent = marked.parse(markdownText);
+
+    res.render("listings/itinerary", { itinerary: htmlContent });
+  } catch (err) {
+    console.error("Error while generating itinerary:", err);
+    res.render("listings/itinerary", {
+      itinerary: "❌ Failed to generate itinerary. Please try again later.",
+    });
+  }
+};
