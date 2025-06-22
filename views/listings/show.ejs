@@ -19,7 +19,9 @@
         <p class="card-text">Owned by - <i><%=listing.owner.username%></i></p>
 
         <p class="card-text"><%= listing.description %></p>
-        <p class="card-text"><%= listing.price.toLocaleString("en-IN") %></p>
+        <p class="card-text">
+          &#8377; <%= listing.price.toLocaleString("en-IN") %>
+        </p>
         <p class="card-text"><%= listing.location %></p>
         <p class="card-text"><%= listing.country %></p>
       </div>
@@ -122,7 +124,7 @@
       <div class="row">
         <p><b>All Reviews</b></p>
         <%for(review of listing.reviews){%>
-        <div class="card col-5 ms-3 mb-3">
+        <div class="card col-5 ms-5 mb-3">
           <div class="card-body">
             <h5 class="card-title"><%=review.author.username%></h5>
             <p class="card-text"><%=review.comment%></p>
@@ -145,8 +147,9 @@
       <%}%>
     </div>
 
-    <div class="col-8 offset-3 mb-3">
+    <div class="col-5 offset-3 mb-3">
       <h3>Where you'll be</h3>
+      <br />
       <div id="map"></div>
     </div>
   </div>
